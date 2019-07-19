@@ -2,6 +2,7 @@ package com.revature.banking;
 
 public class BankAccount 
 {
+	//E
 	private double amount;
 	private int accountID;
 
