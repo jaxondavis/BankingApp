@@ -1,12 +1,13 @@
 package com.revature.banking;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Prompt 
 {
 	private String header;
 	private String inputPrompt;
-	private ArrayList<PromptChoice> choices;
+	//private ArrayList<PromptChoice> choices;
+	private HashMap<Integer, String> choices;
 	
 	public Prompt(String header)
 	{
@@ -20,13 +21,13 @@ public class Prompt
 		this.setInputPrompt(inputPrompt);;
 	}
 	
-	public Prompt(String header, ArrayList<PromptChoice> choices)
+	public Prompt(String header, HashMap<Integer, String> choices)
 	{
 		this.setHeader(header);
 		this.setChoices(choices);
 		inputPrompt = "Enter your input: ";
 	}
-	public Prompt(String header, String inputPrompt, ArrayList<PromptChoice> choices)
+	public Prompt(String header, String inputPrompt, HashMap<Integer, String> choices)
 	{
 		this.setHeader(header);
 		this.setChoices(choices);
@@ -53,12 +54,12 @@ public class Prompt
 		this.inputPrompt = inputPrompt;
 	}
 
-	public ArrayList<PromptChoice> getChoices() 
+	public HashMap<Integer, String> getChoices() 
 	{
 		return choices;
 	}
 
-	public void setChoices(ArrayList<PromptChoice> choices) 
+	public void setChoices(HashMap<Integer, String> choices) 
 	{
 		this.choices = choices;
 	}
