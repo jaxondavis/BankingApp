@@ -9,4 +9,13 @@ public class Customer extends UserAccount
 		this.userName = userName;
 		this.password = password;
 	}
+
+	@Override
+	public String toString() {
+		return "Customer [personName=" + personName + ", userName=" + userName + ", password=" + password + "]";
+	}
+	
+	
+	
+	
 }

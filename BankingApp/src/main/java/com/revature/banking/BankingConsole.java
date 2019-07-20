@@ -10,19 +10,7 @@ public class BankingConsole
 	{
 		Scanner s = new Scanner(System.in);
 		String input;
-		char answer = 'n';
-		/*do
-		{
-			run();
-			System.out.println("Do you wish to quit?: ");
-			if(input.hasNext())
-			{
-				answer = input.next();
-			}
-			input.close();
-			System.out.println(answer);
-		}while(answer.toUpperCase().equals("YES") || answer.toUpperCase().equals("Y"));*/
-		
+		char answer = 'n';		
 		while(answer != 'y')
 		{
 			run();
@@ -49,10 +37,8 @@ public class BankingConsole
 		Scanner s = new Scanner(System.in);
 		if(!p.getChoices().isEmpty())
 		{
-			//System.out.println("sadf");
 			for(PromptChoice pc : p.getChoices())
 			{
-				//System.out.println("sadf");
 				System.out.print("\t"+pc.getChoiceNum()+" "+pc.getChoiceText() + "\n");
 			}
 		}
@@ -69,15 +55,6 @@ public class BankingConsole
 	
 	public static void run()
 	{
-		//prompt("");
-		/*PromptChoice main1 = new PromptChoice(1, "Login");
-		PromptChoice main2 = new PromptChoice(2, "Create Account");
-		PromptChoice main3 = new PromptChoice(3, "Quit");
-		ArrayList<PromptChoice> list = new ArrayList<PromptChoice>();
-		list.add(main1);
-		list.add(main2);
-		list.add(main3);
-		Prompt test = new Prompt("Welcome!", list);*/
 		PromptCollection promptList = new PromptCollection();
 		promptList.initialize();
 		int mainMenuChoice = printChoicePrompt(promptList.test);
@@ -96,6 +73,5 @@ public class BankingConsole
 				System.out.println("That is not a valid input. ");
 				break;
 		}
-		//System.out.println(mainMenuChoice);
 	}
 }
