@@ -1,10 +1,29 @@
 package com.revature.banking;
 
-public class BankAccount 
+import java.io.Serializable;
+
+public class BankAccount implements Serializable
 {
-	//E
+
+	private static final long serialVersionUID = 6185608016529091662L;
+
 	private double amount;
-	private int accountID;
+	private String accountID;
+	private String name;
+	
+	public BankAccount()
+	{
+		
+	}
+	
+	
+	public BankAccount(double amount, String accountID, String name) 
+	{
+		super();
+		this.amount = amount;
+		this.accountID = accountID;
+		this.name = name;
+	}
 
 	public double getAmount() 
 	{
@@ -16,13 +35,23 @@ public class BankAccount
 		this.amount = amount;
 	}
 
-	public int getAccountID() 
+	public String getAccountID() 
 	{
 		return accountID;
 	}
 
-	public void setAccountID(int accountID) 
+	public void setAccountID(String accountID) 
 	{
 		this.accountID = accountID;
+	}
+
+	public String getName() 
+	{
+		return name;
+	}
+
+	public void setName(String name) 
+	{
+		this.name = name;
 	}
 }
