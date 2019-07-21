@@ -1,7 +1,10 @@
 package com.revature.banking;
 
-public abstract class UserAccount 
+import java.io.Serializable;
+
+public abstract class UserAccount implements Serializable
 {
+	private static final long serialVersionUID = -3450814398265583147L;
 	protected String personName, userName, password;
 
 	public String getPersonName() 

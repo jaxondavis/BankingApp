@@ -30,4 +30,9 @@ public class Employee extends UserAccount implements Serializable
 		this.customers = customers;
 	}
 	
+	@Override
+	public String toString() {
+		return "Employee [personName=" + personName + ", userName=" + userName
+				+ ", password=" + password + ", customers= " + customers + "]";
+	}
 }

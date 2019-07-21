@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 class TestCustomer {
 
 	@Test
-	void testCustomer() {
+	void testToString() {
 		fail("Not yet implemented");
 	}
 
