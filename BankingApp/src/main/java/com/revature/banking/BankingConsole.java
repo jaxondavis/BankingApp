@@ -29,16 +29,16 @@ public class BankingConsole
 		File employeeFile = new File("Employees.txt");
 		File adminFile = new File("Admins.txt");
 		File unapprovedFile = new File("UnapprovedAccounts.txt"); 
-		ArrayList<String> testIDs = new ArrayList<String>();
-		testIDs.add("12");
-		Customer c = new Customer("John name", "jName", "qwerty", testIDs);
-		ArrayList<Customer> cList = new ArrayList<Customer>();
-		cList.add(c);
+		//ArrayList<String> testIDs = new ArrayList<String>();
+		//testIDs.add("12");
+		//Customer c = new Customer("John name", "jName", "qwerty", testIDs);
+		//ArrayList<Customer> cList = new ArrayList<Customer>();
+		//cList.add(c);
 		//allAccounts.add(c);
 		//customerAccounts.add(c);
-		allAccounts.add(new Employee("John nombre", "nombre1", "qwerty",cList));
+		//allAccounts.add(new Employee("John nombre", "nombre1", "qwerty",cList));
 		//writeFile(customerFile);
-		writeFile(employeeFile);
+		//writeFile(employeeFile);
 		
 		readFile(customerFile);
 		readFile(employeeFile);
