@@ -7,18 +7,29 @@ public class Employee extends UserAccount implements Serializable
 {
 	private static final long serialVersionUID = -1780676410242272951L;
 	private ArrayList<Customer> customers;
+	protected String employeeID;
 	
 	public Employee() 
 	{
 		super();
 	}
-
-	public Employee(String personName, String userName, String password, ArrayList<Customer> customers) 
+	
+	public Employee(String personName, String userName, String password, String employeeID) 
 	{
 		super();
 		this.personName = personName;
 		this.userName = userName;
 		this.password = password;
+		this.employeeID = employeeID;
+	}
+
+	public Employee(String personName, String userName, String password, String employeeID, ArrayList<Customer> customers) 
+	{
+		super();
+		this.personName = personName;
+		this.userName = userName;
+		this.password = password;
+		this.employeeID = employeeID;
 		this.customers = customers;
 	}
 
@@ -30,6 +41,14 @@ public class Employee extends UserAccount implements Serializable
 		this.customers = customers;
 	}
 	
+	public String getEmployeeID() {
+		return employeeID;
+	}
+
+	public void setEmployeeID(String employeeID) {
+		this.employeeID = employeeID;
+	}
+
 	@Override
 	public String toString() {
 		return "Employee [personName=" + personName + ", userName=" + userName

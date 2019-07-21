@@ -20,8 +20,7 @@ public class BankingConsole
 	public static ArrayList<BankAccount> bankAccounts = new ArrayList<BankAccount>();
 	public static ArrayList<BankAccount> unapprovedAccounts = new ArrayList<BankAccount>();
 	public static UserAccount loggedInAccount;
-	public static boolean quit;
-	
+
 	public static void main(String[] args) 
 	{
 		File bankAccountFile = new File("BankAccounts.txt"); 
@@ -55,15 +54,6 @@ public class BankingConsole
 		}while(input == "y");
 		
 	}
-	/*public static void prompt(String text)
-	{
-		System.out.print(text+": ");
-	}
-	
-	public static void promptChoose(String text)
-	{
-		System.out.print(text+": ");
-	}*/
 	
 	@SuppressWarnings("unchecked")
 	public static void readFile(File f)
@@ -259,7 +249,7 @@ public class BankingConsole
 				break;
 			case 2:
 				System.out.println("Account creation sequence begin");
-				//createUserAccount();
+				createUserAccount();
 				break;
 			case 3:
 				break;
@@ -292,7 +282,7 @@ public class BankingConsole
 	public static void createUserAccount()
 	{
 		Scanner s = new Scanner(System.in);
-		System.out.println("Select what type of account you would like to create: \n\t1. Customer\n\t2. Employee\n\t");
+		System.out.println("Select what type of account you would like to create: \n\t1. Customer\n\t2. Employee\n\t3. Admin");
 		int input = s.nextInt();
 		System.out.print("Enter your full name: ");
 		String nameInput = s.nextLine();
@@ -300,19 +290,91 @@ public class BankingConsole
 		String userNameInput = s.nextLine();
 		System.out.print("Enter your password: ");
 		String passwordInput = s.nextLine();
+		String empIDInput = null;
 		switch(input)
 		{
 			case 1:
-				Customer c = new Customer(nameInput, userNameInput, passwordInput);
+				ArrayList<Customer> customers = returnCustList();
+				for(int i = 0; i < customers.size(); i++)
+				{
+					if(userNameInput.equals(customers.get(i).getUserName()))
+					{
+						if(passwordInput.equals(customers.get(i).getPassword()))
+						{
+							System.out.println("That password already exists");
+							break;
+						}
+						System.out.println("That username already exists");
+						break;
+					}
+					else
+					{
+						Customer c = new Customer(nameInput, userNameInput, passwordInput);
+						allAccounts.add(c);
+					}
+				}
 				//s.close();
 				break;
 			case 2:
 				System.out.print("Enter your employee ID number: ");
-				String empIDInput = s.nextLine();
+				empIDInput = s.nextLine();
+				ArrayList<Employee> employees = returnEmpList();
+				for(int i = 0; i < employees.size(); i++)
+				{
+					if(empIDInput.equals(employees.get(i).getEmployeeID()))
+					{
+						if(userNameInput.equals(employees.get(i).getUserName()))
+						{
+							if(passwordInput.equals(employees.get(i).getPassword()))
+							{
+								System.out.println("That password already exists");
+								break;
+							}
+							System.out.println("That username already exists");
+							break;
+						}
+						System.out.println("That employee ID number already exists");
+						break;
+					}
+					else
+					{
+						Employee e = new Employee(nameInput, userNameInput, passwordInput, empIDInput);
+						allAccounts.add(e);
+					}
+				}
+				break;
+			case 3:
+				System.out.print("Enter your employee ID number: ");
+				empIDInput = s.nextLine();
+				ArrayList<Admin> admins = returnAdList();
+				for(int i = 0; i < admins.size(); i++)
+				{
+					if(empIDInput.equals(admins.get(i).getEmployeeID()))
+					{
+						if(userNameInput.equals(admins.get(i).getUserName()))
+						{
+							if(passwordInput.equals(admins.get(i).getPassword()))
+							{
+								System.out.println("That password already exists");
+								break;
+							}
+							System.out.println("That username already exists");
+							break;
+						}
+						System.out.println("That employee ID number already exists");
+						break;
+					}
+					else
+					{
+						Admin a = new Admin(nameInput, userNameInput, passwordInput, empIDInput);
+						allAccounts.add(a);
+					}
+				}
 				//s.close();
 				break;
+			default:
+				break;
 		}
-		
 		
 	}
 	
