@@ -54,6 +54,8 @@ public class Employee extends UserAccount implements Serializable {
 	}
 
 	//approve customer accounts
+	//adding customer from unapproved account to approved account
+	//adding id from unapproved account to approved customer
 	public static void approveAccounts(Customer cust, ArrayList<BankAccount> approvedAcct, BankAccount unapprovedAcct) 
 		{	
 			approvedAcct.add(unapprovedAcct);
@@ -61,8 +63,11 @@ public class Employee extends UserAccount implements Serializable {
 		}
 
 		
-	}
+	
 
+	
+
+}
 	
 
 
