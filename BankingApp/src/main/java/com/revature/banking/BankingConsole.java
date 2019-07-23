@@ -30,6 +30,7 @@ public class BankingConsole
 
 	public static void main(String[] args) 
 	{
+		Scanner s = new Scanner(System.in);
 		readFile(bankAccountFile);
 		readFile(customerFile);
 		readFile(employeeFile);
@@ -41,7 +42,6 @@ public class BankingConsole
 		do
 		{
 			run();
-			Scanner s = new Scanner(System.in);
 			System.out.print("Do you wish to quit?(Y/N): ");
 			input = s.next().toLowerCase();
 			//s.close();

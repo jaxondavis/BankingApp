@@ -18,7 +18,6 @@ public class Customer extends UserAccount implements Serializable
 		this.personName = personName;
 		this.userName = userName;
 		this.password = password;
-		
 	}
 	
 	public Customer(String personName, String userName, String password, ArrayList<String> accountIDs)
@@ -43,5 +42,5 @@ public class Customer extends UserAccount implements Serializable
 	public String toString() {
 		return "Customer [personName=" + personName + ", userName=" + userName
 				+ ", password=" + password + ", accountIDs= " + accountIDs + "]";
-	}
+	}	
 }

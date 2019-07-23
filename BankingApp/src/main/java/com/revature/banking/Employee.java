@@ -3,8 +3,7 @@ package com.revature.banking;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Employee extends UserAccount implements Serializable
-{
+public class Employee extends UserAccount implements Serializable {
 	private static final long serialVersionUID = -1780676410242272951L;
 	private ArrayList<Customer> customers;
 	protected String employeeID;
@@ -61,17 +60,31 @@ public class Employee extends UserAccount implements Serializable
 		this.employeeID = employeeID;
 	}
 	
-	public boolean isCustomerInList(Customer input)
-	{
-		for(Customer c : customers)
-		{
-			if(c.equals(input))
-			{
-				return true;
+	// check if customer is in list
+		public boolean isCustomerInList(Customer cust) {
+			for (int i = 0; i < customers.size(); i++) {
+				if (cust.equals(customers.get(i))) {
+					return true;
+				}
+			}
+			return false;
+		}
+
+		// view customer info
+		public void viewCustomerInfo(Customer cust) {
+			for (int i = 0; i < customers.size(); i++) {
+				if (cust.equals(customers.get(i))) {
+					System.out.println("Customer Name: " + cust.personName);
+					System.out.println("Customer Username: " + cust.userName);
+					System.out.println("Customer Password: " + cust.password);
+				}
 			}
 		}
-		return false;
-	}
+
+		public void approveAccounts(Customer cust, ArrayList<BankAccount> approvedAcct, BankAccount unapprovedAcct) {
+			approvedAcct.add(unapprovedAcct);
+			cust.getAccountIDs().add(unapprovedAcct.getAccountID());
+		}
 	
 	public ArrayList<BankAccount> getUnapprovedAccounts(Customer c, ArrayList<BankAccount> unList)
 	{
