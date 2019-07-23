@@ -13,6 +13,13 @@ public final class Admin extends Employee implements Serializable
 		// TODO Auto-generated constructor stub
 	}
 	
+	public Admin(String personName, String userName, String password)
+	{
+		this.personName = personName;
+		this.userName = userName;
+		this.password = password;
+	}
+	
 	public Admin(String personName, String userName, String password, String employeeID)
 	{
 		this.personName = personName;

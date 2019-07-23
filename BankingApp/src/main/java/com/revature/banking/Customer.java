@@ -44,6 +44,4 @@ public class Customer extends UserAccount implements Serializable
 		return "Customer [personName=" + personName + ", userName=" + userName
 				+ ", password=" + password + ", accountIDs= " + accountIDs + "]";
 	}
-	
-	
 }

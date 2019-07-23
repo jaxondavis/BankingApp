@@ -14,6 +14,14 @@ public class Employee extends UserAccount implements Serializable
 		super();
 	}
 	
+	public Employee(String personName, String userName, String password) 
+	{
+		super();
+		this.personName = personName;
+		this.userName = userName;
+		this.password = password;
+	}
+	
 	public Employee(String personName, String userName, String password, String employeeID) 
 	{
 		super();
@@ -33,25 +41,57 @@ public class Employee extends UserAccount implements Serializable
 		this.customers = customers;
 	}
 
-	public ArrayList<Customer> getCustomers() {
+	public ArrayList<Customer> getCustomers() 
+	{
 		return customers;
 	}
 
-	public void setCustomers(ArrayList<Customer> customers) {
+	public void setCustomers(ArrayList<Customer> customers) 
+	{
 		this.customers = customers;
 	}
 	
-	public String getEmployeeID() {
+	public String getEmployeeID()
+	{
 		return employeeID;
 	}
 
-	public void setEmployeeID(String employeeID) {
+	public void setEmployeeID(String employeeID) 
+	{
 		this.employeeID = employeeID;
+	}
+	
+	public boolean isCustomerInList(Customer input)
+	{
+		for(Customer c : customers)
+		{
+			if(c.equals(input))
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public ArrayList<BankAccount> getUnapprovedAccounts(Customer c, ArrayList<BankAccount> unList)
+	{
+		ArrayList<BankAccount> list = new ArrayList<BankAccount>();
+		for(String str : c.getAccountIDs())
+		{
+			for(int i = 0; i < unList.size(); i++)
+			{
+				if(unList.get(i).getAccountID().equals(str))
+				{
+					list.add(unList.get(i));
+				}
+			}
+		}
+		return list;
 	}
 
 	@Override
 	public String toString() {
 		return "Employee [personName=" + personName + ", userName=" + userName
-				+ ", password=" + password + ", customers= " + customers + "]";
+				+ ", password=" + password + ", employeeID= " + employeeID + ", customers= "+customers+"]";
 	}
 }
