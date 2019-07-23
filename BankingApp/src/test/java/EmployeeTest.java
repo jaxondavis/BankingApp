@@ -11,12 +11,10 @@ import com.revature.banking.Employee;
 
 class EmployeeTest {
 
-	Employee e1 = new Employee();
-	
 	
 	@Test
 	void test() {
-		
+		Employee e1 = new Employee();
 		Customer cust = new Customer();
 		Customer cust2 = new Customer();
 		cust.setPersonName("Bob");
@@ -33,6 +31,7 @@ class EmployeeTest {
 	}
 	
 	void test2() {
+		Employee e1 = new Employee();
 		ArrayList<BankAccount> unList = new ArrayList<BankAccount>();
 		Customer cust3 = new Customer();
 		BankAccount bank1 = new BankAccount();

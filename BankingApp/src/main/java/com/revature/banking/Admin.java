@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public final class Admin extends Employee implements Serializable
 {
-	
+	private static final long serialVersionUID = 8117653648675318681L;
 	
 	public Admin() {
 		super();
@@ -26,9 +26,6 @@ public final class Admin extends Employee implements Serializable
 	public Admin(String personName, String userName, String password) {
 		super(personName, userName, password);
 		// TODO Auto-generated constructor stub
-	}
-	
-	
-	
+	}	
 	
 }

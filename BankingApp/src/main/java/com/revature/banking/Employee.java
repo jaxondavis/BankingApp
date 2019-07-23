@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public class Employee extends UserAccount implements Serializable {
 	private static final long serialVersionUID = -1780676410242272951L;
-	private ArrayList<Customer> customers;
+	private ArrayList<Customer> customers = new ArrayList<Customer>();
 	protected String employeeID;
 	
 	public Employee() 

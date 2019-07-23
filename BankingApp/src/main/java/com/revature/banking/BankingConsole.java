@@ -1,7 +1,5 @@
 package com.revature.banking;
 
-import static org.hamcrest.CoreMatchers.containsString;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -26,17 +24,22 @@ public class BankingConsole
 	public static File employeeFile = new File("Employees.txt");
 	public static File adminFile = new File("Admins.txt");
 	public static File unapprovedFile = new File("UnapprovedAccounts.txt");
-	public static UserAccount loggedInAccount;
+	public static Customer customerLoggedIn;
+	public static Employee employeeLoggedIn;
+	public static Admin adminLoggedIn;
 
 	public static void main(String[] args) 
 	{
 		Scanner s = new Scanner(System.in);
-		readFile(bankAccountFile);
-		readFile(customerFile);
-		readFile(employeeFile);
-		readFile(adminFile);
-		printArray(allAccounts);
+		readAllFiles();
+		//initializeValues();
+		//readFile(bankAccountFile);
+		//readFile(customerFile);
+		//readFile(employeeFile);
+		//readFile(adminFile);
+		//printArray(allAccounts);
 		//printArray(bankAccounts);
+		
 		
 		String input = "n";
 		do
@@ -49,27 +52,51 @@ public class BankingConsole
 		
 	}
 	
+	public static void readAllFiles()
+	{
+		readFile(bankAccountFile);
+		readFile(unapprovedFile);
+		readFile(customerFile);
+		readFile(employeeFile);
+		readFile(adminFile);
+	}
+	
+	public static void writeAllFiles()
+	{
+		writeFile(bankAccountFile);
+		writeFile(unapprovedFile);
+		writeFile(customerFile);
+		writeFile(employeeFile);
+		writeFile(adminFile);
+	}
+	
 	public static void initializeValues()
 	{
-		/*BankAccount b1 = new BankAccount(1254.9, "id27451", "Checking", false);
+		BankAccount b1 = new BankAccount(1254.9, "id27451", "Checking", true);
 		BankAccount b2 = new BankAccount(98.0, "id84633", "Savings", true);
+		BankAccount b3 = new BankAccount(0.0, "id84755", "Stocks", false);
 		ArrayList<String> testIDs = new ArrayList<String>();
 		bankAccounts.add(b1);
 		bankAccounts.add(b2);
+		unapprovedAccounts.add(b3);
 		testIDs.add(b1.getAccountID());
 		testIDs.add(b2.getAccountID());
+		testIDs.add(b3.getAccountID());
 		Customer c = new Customer("John name", "jName", "qwerty", testIDs);
 		ArrayList<Customer> cList = new ArrayList<Customer>();
 		cList.add(c);
 		allAccounts.add(c);
-		allAccounts.add(new Employee("John nombre", "nombre1", "qwerty", "emp321",cList));
-		writeFile(customerFile);
-		writeFile(employeeFile);
+		Employee e = new Employee("John nombre", "nombre1", "qwerty", "emp321",cList);
+		ArrayList<BankAccount> unList = e.getUnapprovedAccounts(e.getCustomers().get(0), unapprovedAccounts);
+		allAccounts.add(e);
+		//writeFile(customerFile);
+		//writeFile(employeeFile);
 		Admin a = new Admin("John Madden", "jMadden03", "football", "admin123");
 		allAccounts.add(a);
-		writeFile(adminFile);
+		//printArray(unList);
+		//writeFile(adminFile);
 		//customerAccounts.add(c);
-		writeFile(bankAccountFile);*/
+		//writeFile(bankAccountFile);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -232,29 +259,6 @@ public class BankingConsole
 		return aList;
 	}
 	
-	public static int printChoicePrompt(Prompt p)
-	{
-		System.out.print(p.getHeader()+"\n");
-		Scanner s = new Scanner(System.in);
-		HashMap<Integer, String> h = p.getChoices();
-		if(!p.getChoices().isEmpty())
-		{
-			for(int i = 0; i < h.size(); i++)
-			{
-				System.out.print("\t"+(i+1)+" "+h.get(i+1)+ "\n");
-			}
-		}
-		System.out.print(p.getInputPrompt());
-		if(s.hasNextInt())
-		{
-			int choice = s.nextInt();
-			//s.close();
-			return choice;
-		}
-		//s.close();
-		return 0;
-	}
-	
 	public static void run()
 	{
 		//PromptCollection promptList = new PromptCollection();
@@ -298,24 +302,29 @@ public class BankingConsole
 		{
 			if(userNameInput.equals(allAccounts.get(i).getUserName()) && passwordInput.equals(allAccounts.get(i).getPassword()))
 			{
-				loggedInAccount = allAccounts.get(i);
+				//loggedInAccount = allAccounts.get(i);
 				if(allAccounts.get(i) instanceof Customer)
 				{
-					mainCustomerMenu((Customer)loggedInAccount);
-				}
-				else if(allAccounts.get(i) instanceof Employee)
-				{
-					mainEmployeeMenu((Employee)loggedInAccount);
+					customerLoggedIn = (Customer)allAccounts.get(i);
+					mainCustomerMenu();
+					return;
 				}
 				else if(allAccounts.get(i) instanceof Admin)
 				{
-					mainAdminMenu((Admin)loggedInAccount);
+					adminLoggedIn = (Admin)allAccounts.get(i);
+					mainAdminMenu();
+					return;
 				}
-				
+				else if(allAccounts.get(i) instanceof Employee)
+				{
+					employeeLoggedIn = (Employee)allAccounts.get(i);
+					mainEmployeeMenu();
+					return;
+				}			
 			}
 		}
 		//s.close();
-		
+		System.out.println("That login was not found in our database");
 		//mainCustomerMenu(loggedInAccount);
 	}
 	
@@ -327,9 +336,8 @@ public class BankingConsole
 		System.out.println("Select what type of account you would like to create: \n\t1. Customer\n\t2. Employee\n\t3. Admin");
 		int input = s.nextInt();
 		s.nextLine();
-		System.out.println("Enter your full name: ");
+		System.out.print("Enter your full name: ");
 		nameInput = s.nextLine();
-		System.out.println("Input: "+nameInput);
 		System.out.print("Enter your username: ");
 		if(s.hasNext())
 		{
@@ -345,13 +353,17 @@ public class BankingConsole
 		{
 			if(userNameInput.equals(allAccounts.get(i).getUserName()))
 			{
-				
-				if(passwordInput.equals(allAccounts.get(i).getPassword()))
-				{
-					System.out.println("That password already exists");
-					break;
-				}
 				System.out.println("That username already exists");
+				break;
+			}
+			else if(passwordInput.equals(allAccounts.get(i).getPassword()))
+			{
+				System.out.println("That password already exists");
+				break;
+			}
+			else if(userNameInput.equals(allAccounts.get(i).getUserName()) && passwordInput.equals(allAccounts.get(i).getPassword()))
+			{
+				System.out.println("That username and password already exist");
 				break;
 			}
 			else
@@ -361,55 +373,63 @@ public class BankingConsole
 					case 1:
 						Customer custAccount = new Customer(nameInput, userNameInput, passwordInput);
 						allAccounts.add(custAccount);
-						mainCustomerMenu(custAccount);
+						writeFile(customerFile);
 						break;
 					case 2:
 						Employee empAccount = new Employee(nameInput, userNameInput, passwordInput);
 						allAccounts.add(empAccount);
+						writeFile(employeeFile);
 						break;
 					case 3:
 						Admin adminAccount = new Admin(nameInput, userNameInput, passwordInput);
 						allAccounts.add(adminAccount);
+						writeFile(adminFile);
 						break;
-				}	
+				}
 			}
-			
 		}
 	}
-	public static void mainCustomerMenu(Customer account)
+	public static void mainCustomerMenu()
 	{
 		Scanner s = new Scanner(System.in);
 		boolean q = false;
 		do
 		{
-			System.out.println("\nWelcome back, "+account.getPersonName()+"! What would you like to do? \n\t1. View Current Accounts\n\t2. Apply for a new Account\n\t3. Deposit Funds\n\t4. Withdraw Funds\n\t5. Transfer Funds\n\t6. Logout");
+			System.out.println("\nWelcome back, "+customerLoggedIn.getPersonName()+"! What would you like to do? \n\t1. View Current Accounts\n\t2. Apply for a new Account\n\t3. Deposit Funds\n\t4. Withdraw Funds\n\t5. Transfer Funds\n\t6. Logout");
 			System.out.print("Enter your input: ");
 			int input = s.nextInt();
 			s.nextLine();
 			switch(input)
 			{
 				case 1:
-					printAccounts((Customer)loggedInAccount);
+					printAccounts(customerLoggedIn);
 					break;
 				case 2:
-					applyForAccount();
+					customerLoggedIn.getAccountIDs().add(applyForAccount());
+					writeFile(unapprovedFile);
+					writeFile(bankAccountFile);
+					writeFile(customerFile);
+					writeFile(employeeFile);
 					break;
 				case 3:
 					System.out.println("Choose an account:");
-					BankAccount b1 = promptAccount((Customer)loggedInAccount);
+					BankAccount b1 = promptAccount(customerLoggedIn);
 					b1.deposit();
+					writeFile(bankAccountFile);
 					break;
 				case 4:
 					System.out.println("Choose an account:");
-					BankAccount b2 = promptAccount((Customer)loggedInAccount);
+					BankAccount b2 = promptAccount(customerLoggedIn);
 					b2.withdraw();
+					writeFile(bankAccountFile);
 					break;
 				case 5:
 					System.out.println("Choose an account to transfer funds from:");
-					BankAccount b3 = promptAccount((Customer)loggedInAccount);
+					BankAccount b3 = promptAccount(customerLoggedIn);
 					System.out.println("Choose an account to transfer funds to:");
-					BankAccount b4 = promptAccount((Customer)loggedInAccount);
+					BankAccount b4 = promptAccount(customerLoggedIn);
 					b3.transfer(b4);
+					writeFile(bankAccountFile);
 					break;
 				case 6:
 					q = true;
@@ -418,7 +438,7 @@ public class BankingConsole
 		}while(q == false);
 	}
 	
-	public static void applyForAccount()
+	public static String applyForAccount()
 	{
 		Scanner s = new Scanner(System.in);
 		BankAccount b = null;
@@ -443,31 +463,53 @@ public class BankingConsole
 		}
 		
 		b = new BankAccount(0.0, id, name, false);
+		//bankAccounts.add(b);
+		//printArray(returnEmpList());
+		for(Employee e : returnEmpList())
+		{
+			if(e.getCustomers() != null)
+			{
+				for(Customer c : e.getCustomers())
+				{
+					if(e.isCustomerInList(c))
+					{
+						c.getAccountIDs().add(id);
+					}
+				}
+			}
+		}
 		unapprovedAccounts.add(b);
+		return id;
 	}
 	
-	public static void mainEmployeeMenu(Employee account)
+	public static void mainEmployeeMenu()
 	{
 		Scanner s = new Scanner(System.in);
 		boolean q = false;
 		do
 		{
-			System.out.println("\nWelcome back, "+account.getPersonName()+"! What would you like to do? \n\t1. View Customer Information\n\t2. View Current Applications\n\t3. Quit");			
+			System.out.println("\nWelcome back, "+employeeLoggedIn.getPersonName()+"! What would you like to do? \n\t1. View Customer Information\n\t2. View Current Applications\n\t3. Quit");			
 			System.out.print("Enter your input: ");
 			int input = s.nextInt();
 			s.nextLine();
 			switch(input)
 			{
 				case 1:
-					for(Customer c : account.getCustomers())
+					for(Customer c : employeeLoggedIn.getCustomers())
 					{
-						System.out.println(c.getPersonName()+"\n");
+						//System.out.println(c.getPersonName()+"\n");
+						employeeLoggedIn.viewCustomerInfo(c);
 						printAccounts(c);
 						System.out.println();
 					}
 					break;
 				case 2:
-					
+					approve();
+					writeFile(unapprovedFile);
+					writeFile(bankAccountFile);
+					writeFile(customerFile);
+					writeFile(employeeFile);
+					//writeAllFiles();
 					break;
 				case 3:
 					q = true;
@@ -476,11 +518,162 @@ public class BankingConsole
 		}while(q == false);
 	}
 	
-	public static void mainAdminMenu(Admin account)
+	public static void approve()
 	{
 		Scanner s = new Scanner(System.in);
-		System.out.println("\nWelcome back, "+account.getPersonName()+"! What would you like to do? \n\t1. View Customer Information\n\t2. View Current Applications\n\t");
-		int input = s.nextInt();
+		System.out.println("Available Customer: ");
+		for(int i = 0; i < employeeLoggedIn.getCustomers().size(); i++)
+		{
+			System.out.println((i+1)+": "+employeeLoggedIn.getCustomers().get(i).getPersonName());
+		}
+		System.out.print("Choose a customer: ");
+		int custChoice = s.nextInt()-1;
+		s.nextLine();
+		System.out.println("Unapproved Accounts: ");
+		ArrayList<BankAccount> unList = employeeLoggedIn.getUnapprovedAccounts(employeeLoggedIn.getCustomers().get(custChoice), unapprovedAccounts);
+		for(int i = 0; i < unList.size(); i++)
+		{
+			System.out.println((i+1)+": "+unList.get(i));
+		}
+		System.out.print("Choose an account: ");
+		int acctChoice = s.nextInt()-1;
+		char approveChoice = ' ';
+		s.nextLine();
+		System.out.print("Approve Account(y/n)?: ");
+		approveChoice = s.next().toLowerCase().charAt(0);
+		s.nextLine();
+		if(approveChoice == 'y')
+		{
+			unList.get(acctChoice).setApproved(true);
+			bankAccounts.add(unList.get(acctChoice));
+			employeeLoggedIn.getCustomers().get(custChoice).getAccountIDs().add(unList.get(acctChoice).getAccountID());
+			unapprovedAccounts.remove(unList.get(acctChoice));
+		}
+		else
+		{
+			unapprovedAccounts.remove(unList.get(acctChoice));
+		}
+	}
+	
+	public static void approveForAdmin()
+	{
+		Scanner s = new Scanner(System.in);
+		System.out.println("Available Customer: ");
+		ArrayList<Customer> cList = returnCustList();
+		for(int i = 0; i < cList.size(); i++)
+		{
+			System.out.println((i+1)+": "+cList.get(i).getPersonName());
+		}
+		System.out.print("Choose a customer: ");
+		int custChoice = s.nextInt()-1;
+		s.nextLine();
+		System.out.println("Unapproved Accounts: ");
+		ArrayList<BankAccount> unList = adminLoggedIn.getUnapprovedAccounts(cList.get(custChoice), unapprovedAccounts);
+		for(int i = 0; i < unList.size(); i++)
+		{
+			System.out.println((i+1)+": "+unList.get(i));
+		}
+		System.out.print("Choose an account: ");
+		int acctChoice = s.nextInt()-1;
+		char approveChoice = ' ';
+		s.nextLine();
+		System.out.print("Approve Account(y/n)?: ");
+		approveChoice = s.next().toLowerCase().charAt(0);
+		s.nextLine();
+		if(approveChoice == 'y')
+		{
+			unList.get(acctChoice).setApproved(true);
+			bankAccounts.add(unList.get(acctChoice));
+			cList.get(custChoice).getAccountIDs().add(unList.get(acctChoice).getAccountID());
+			unapprovedAccounts.remove(unList.get(acctChoice));
+		}
+		else
+		{
+			unapprovedAccounts.remove(unList.get(acctChoice));
+		}
+	}
+	
+	public static void mainAdminMenu()
+	{
+		Scanner s = new Scanner(System.in);
+		boolean q = false;
+		do
+		{
+			System.out.println("\nWelcome back, "+adminLoggedIn.getPersonName()+"! What would you like to do? \n\t1. View Customer Information\n\t2. View Current Applications\n\t3. Deposit into a Customer Account\n\t4. Withdraw from a Customer Account\n\t5. Transfer funds between two Customer Accounts\n\t6. Quit");
+			System.out.print("Enter your input: ");
+			int input = s.nextInt();
+			s.nextLine();
+			switch(input)
+			{
+				case 1:
+					printArrayLn(returnCustList());
+					break;
+				case 2:
+					approveForAdmin();
+					writeFile(unapprovedFile);
+					writeFile(bankAccountFile);
+					writeFile(customerFile);
+					writeFile(employeeFile);
+					break;
+				case 3:
+					Customer c1 = chooseCustomer();
+					System.out.println("Choose an account:");
+					BankAccount b1 = promptAccount(c1);
+					b1.deposit();
+					writeFile(bankAccountFile);
+					writeFile(customerFile);
+					writeFile(employeeFile);
+					break;
+				case 4:
+					Customer c2 = chooseCustomer();
+					System.out.println("Choose an account:");
+					BankAccount b2 = promptAccount(c2);
+					b2.withdraw();
+					writeFile(bankAccountFile);
+					writeFile(customerFile);
+					writeFile(employeeFile);
+					break;
+				case 5:
+					Customer c3 = chooseCustomer();
+					System.out.println("Choose an account to transfer funds from:");
+					BankAccount b3 = promptAccount(c3);
+					System.out.println("Choose an account to transfer funds to:");
+					BankAccount b4 = promptAccount(c3);
+					b3.transfer(b4);
+					writeFile(bankAccountFile);
+					writeFile(customerFile);
+					writeFile(employeeFile);
+					break;
+				case 6:
+					Customer c4 = chooseCustomer();
+					System.out.println("Choose an account:");
+					BankAccount b5 = promptAccount(c4);
+					c4.getAccountIDs().remove(b5.getAccountID());
+					bankAccounts.remove(b5);
+					writeFile(bankAccountFile);
+					writeFile(customerFile);
+					writeFile(employeeFile);
+					break;
+				case 7:
+					q = true;
+					break;
+			}
+		}while(q == false);
+	}
+	
+	public static Customer chooseCustomer()
+	{
+		Scanner s = new Scanner(System.in);
+		System.out.println("Available Customer: ");
+		ArrayList<Customer> cList = returnCustList();
+		for(int i = 0; i < cList.size(); i++)
+		{
+			System.out.println((i+1)+": "+cList.get(i).getPersonName());
+		}
+		System.out.print("Choose a customer: ");
+		int custChoice = s.nextInt()-1;
+		s.nextLine();
+		return cList.get(custChoice);
 	}
 	
 	public static void printArray(ArrayList<?> array)
@@ -498,6 +691,25 @@ public class BankingConsole
 			else
 			{
 				System.out.print(array.get(i)+", ");
+			}
+		}
+	}
+	
+	public static void printArrayLn(ArrayList<?> array)
+	{
+		if(array.isEmpty())
+		{
+			System.out.println("Empty ArrayList");
+		}
+		for(int i = 0; i < array.size(); i++)
+		{
+			if(i == array.size()-1)
+			{
+				System.out.println(array.get(i) + "\n");
+			}
+			else
+			{
+				System.out.println(array.get(i)+", ");
 			}
 		}
 	}
