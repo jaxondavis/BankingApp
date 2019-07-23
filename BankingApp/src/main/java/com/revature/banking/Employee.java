@@ -61,30 +61,37 @@ public class Employee extends UserAccount implements Serializable {
 	}
 	
 	// check if customer is in list
-		public boolean isCustomerInList(Customer cust) {
-			for (int i = 0; i < customers.size(); i++) {
-				if (cust.equals(customers.get(i))) {
-					return true;
-				}
-			}
-			return false;
-		}
-
-		// view customer info
-		public void viewCustomerInfo(Customer cust) {
-			for (int i = 0; i < customers.size(); i++) {
-				if (cust.equals(customers.get(i))) {
-					System.out.println("Customer Name: " + cust.personName);
-					System.out.println("Customer Username: " + cust.userName);
-					System.out.println("Customer Password: " + cust.password);
-				}
+	public boolean isCustomerInList(Customer cust) 
+	{
+		for (int i = 0; i < customers.size(); i++) 
+		{
+			if (cust.equals(customers.get(i))) 
+			{
+				return true;
 			}
 		}
+		return false;
+	}
 
-		public void approveAccounts(Customer cust, ArrayList<BankAccount> approvedAcct, BankAccount unapprovedAcct) {
-			approvedAcct.add(unapprovedAcct);
-			cust.getAccountIDs().add(unapprovedAcct.getAccountID());
+	// view customer info
+	public void viewCustomerInfo(Customer cust) 
+	{
+		for (int i = 0; i < customers.size(); i++) 
+		{
+			if (cust.equals(customers.get(i))) 
+			{
+				System.out.println("Customer Name: " + cust.personName);
+				System.out.println("Customer Username: " + cust.userName);
+				System.out.println("Customer Password: " + cust.password);
+			}
 		}
+	}
+
+	public void approveAccounts(Customer cust, ArrayList<BankAccount> approvedAcct, BankAccount unapprovedAcct) 
+	{
+		approvedAcct.add(unapprovedAcct);
+		cust.getAccountIDs().add(unapprovedAcct.getAccountID());
+	}
 	
 	public ArrayList<BankAccount> getUnapprovedAccounts(Customer c, ArrayList<BankAccount> unList)
 	{
